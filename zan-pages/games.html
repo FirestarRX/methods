@@ -66,6 +66,7 @@
       <h2>Singleplayer</h2>
       <div class="game-grid">
         <div class="game-card" data-target="horror"><span>Horror</span></div>
+        <div class="game-card" data-target="RPG"><span>RPG</span></div>
       </div>
     </div>
   </section>
@@ -329,6 +330,33 @@
         },
       ];
       renderGames("fpsGames", fpsGames);
+    </script>
+  </section>
+  <section id="RPG" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">RPG</h2>
+    <p class="section-desc">"It's kill or be killed!" - Flowey</p>
+
+    <div class="game-grid" id="rpgGames"></div>
+    <script>
+      const rpgGames = [
+        {
+          name: "undertale",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/undertale.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/undertale.png"
+        },
+        {
+          name: "Deltarune",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/deltarune.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/deltarune.png"
+        },
+        {
+          name: "Bad Time Simulator",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/BadTimeSimulator.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/BadTimeSimulator.png"
+        }
+      ];
+      renderGames("rpgGames", rpgGames);
     </script>
   </section>
   <section id="horror" class="details-section hidden">
