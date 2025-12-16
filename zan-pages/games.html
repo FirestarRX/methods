@@ -58,7 +58,7 @@
       <div class="game-grid">
         <div class="game-card" data-target="battleroyale"><span>Battle Royale</span></div>
         <div class="game-card" data-target="fps"><span>FPS</span></div>
-        <div class="game-card" data-target="simulators"><span>Simulators</span></div>
+        <div class="game-card" data-target="horror"><span>Horror</span></div>
         <div class="game-card" data-target="platforms"><span>Platforms</span></div>
       </div>
     </div>
@@ -320,6 +320,23 @@
           name: "WarBrokers.io",
           embedUrl: "https://warbrokers.io/signin.php",
           thumbnail: "https://warbrokers.io/img/ui_logo_200.png"
+        },
+      ];
+      renderGames("fpsGames", fpsGames);
+    </script>
+  </section>
+  <section id="horror" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">Horror</h2>
+    <p class="section-desc">Try not to get scared!</p>
+
+    <div class="game-grid" id="horrorGames"></div>
+    <script>
+      const horrorGames = [
+        {
+          name: "FNaF 1",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/Fnaf1.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/fnaf.png"
         },
       ];
       renderGames("fpsGames", fpsGames);
