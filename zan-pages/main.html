@@ -127,7 +127,7 @@
         </main>
         <script>
             const BASE_URL = "https://raw.githubusercontent.com/FirestarRX/methods/refs/heads/main/zan-pages/";
-            const TESTING_MODE = true;
+            const TESTING_MODE = false;
             const CATPPUCCIN_STYLE = `
 			<style>
                 body {
@@ -151,8 +151,7 @@
                     content.removeAttribute("srcdoc");
                     content.src = page;
                     return;
-                }
-
+				}
                 content.srcdoc = CATPPUCCIN_STYLE + `<p class="debug-text">Loading...</p>`;
                 try {
                     const res = await fetch(BASE_URL + page);
