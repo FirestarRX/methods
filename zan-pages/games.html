@@ -67,6 +67,7 @@
       <div class="game-grid">
         <div class="game-card" data-target="horror"><span>Horror</span></div>
         <div class="game-card" data-target="RPG"><span>RPG</span></div>
+        <div class="game-card" data-target="simulator"><span>Simulator</span></div>
       </div>
     </div>
   </section>
@@ -234,7 +235,23 @@
       renderGames("fnfGames", fnfGames);
     </script>
   </section>
-
+  <section id="simulator" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">Simulators</h2>
+    <p class="section-desc">No FNAF Pizzarea sim doesnt count!</p>
+    
+    <div class="game-grid" id="simulatorGames"></div>
+    <script>
+      const simulatorGames = [
+        {
+          name: "Slime Rancher",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/slimerancher.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/slimerancher.jpg"
+        }
+      ];
+      renderGames("simulatorGames", simulatorGames);
+    </script>
+  </section>
   <section id="rhythm" class="details-section hidden">
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Rhythm Games</h2>
