@@ -65,6 +65,8 @@
     <div class="game-section" data-category="singleplayer">
       <h2>Singleplayer</h2>
       <div class="game-grid">
+        <div class="game-card" data-target="action"><span>Action</span></div>
+        <div class="game-card" data-target="platformer"><span>Platformer</span></div>
         <div class="game-card" data-target="horror"><span>Horror</span></div>
         <div class="game-card" data-target="RPG"><span>RPG</span></div>
         <div class="game-card" data-target="simulator"><span>Simulator</span></div>
@@ -262,6 +264,50 @@
       renderGames("simulatorGames", simulatorGames);
     </script>
   </section>
+  <section id="platformer" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">Platformer games</h2>
+    <p class="section-desc">Does hollow knight count? NO!!!</p>
+    
+    <div class="game-grid" id="platformerGames"></div>
+    <script>
+      const platformerGames = [
+        {
+          name: "Super Mario 64",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/mario64.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/mario64.png"
+        },
+      ];
+      renderGames("platformerGames", platformerGames);
+    </script>
+  </section>
+  <section id="action" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">Action games</h2>
+    <p class="section-desc">Do you know what time it is? -Jacket</p>
+    
+    <div class="game-grid" id="actionGames"></div>
+    <script>
+      const actionGames = [
+        {
+          name: "Half Life",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/halflife.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/halflife.png"
+        },
+         {
+          name: "Ultrakill",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/ULTRAKILL.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/ultrakill.png"
+        },
+        {
+          name: "Hotline Miami",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/hotline.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/hotline.jfif"
+        },
+      ];
+      renderGames("actionGames", actionGames);
+    </script>
+  </section>
   <section id="rhythm" class="details-section hidden">
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Rhythm Games</h2>
@@ -385,16 +431,6 @@
     <script>
       const rpgGames = [
         {
-          name: "Super Mario 64",
-          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/mario64.html",
-          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/mario64.png"
-        },
-        {
-          name: "Half Life",
-          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/halflife.html",
-          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/halflife.png"
-        },
-        {
           name: "Undertale",
           embedUrl: "https://firestarrx.github.io/MethodsEmbeds/undertale.html",
           thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/undertale.png"
@@ -410,11 +446,6 @@
           thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/BadTimeSimulator.png"
         },
         {
-          name: "Ultrakill",
-          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/ULTRAKILL.html",
-          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/ultrakill.png"
-        },
-        {
           name: "Hollow Knight",
           embedUrl: "https://firestarrx.github.io/MethodsEmbeds/hollowknight.html",
           thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/hollowknight.jpg"
@@ -423,11 +454,6 @@
           name: "Cuphead",
           embedUrl: "https://firestarrx.github.io/MethodsEmbeds/Cuphead.html",
           thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/Cuphead.jpg"
-        },
-        {
-          name: "Hotline Miami",
-          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/hotline.html",
-          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/hotline.jfif"
         },
       ];
       renderGames("rpgGames", rpgGames);
