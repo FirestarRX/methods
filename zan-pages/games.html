@@ -73,6 +73,7 @@ Enjoy.
         <div class="game-card" data-target="platformer"><span>Platformer</span></div>
         <div class="game-card" data-target="horror"><span>Horror</span></div>
         <div class="game-card" data-target="RPG"><span>RPG</span></div>
+        <div class="game-card" data-target="SEGA"><span>SEGA</span></div>
         <div class="game-card" data-target="simulator"><span>Simulator</span></div>
       </div>
     </div>
@@ -239,6 +240,38 @@ Enjoy.
         },
       ];
       renderGames("fnfGames", fnfGames);
+    </script>
+  </section>
+  <section id="SEGA" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <h2 class="section-title">SEGA</h2>
+    <p class="section-desc">Rolling around at the speed of sound</p>
+    
+    <div class="game-grid" id="segaGames"></div>
+    <script>
+      const segaGames = [
+        {
+          name: "Sonic CD",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/SonicCD.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/SonicCD.png"
+        },
+        {
+          name: "Sonic Mania",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/SonicM.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/SonicM.png"
+        },
+        {
+          name: "Sonic The Hedgehog 2",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/STH2.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/STH2.png"
+        },
+        {
+          name: "Sonic The Hedgehog 3",
+          embedUrl: "https://firestarrx.github.io/MethodsEmbeds/STH3.html",
+          thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/STH3.png"
+        },
+      ];
+      renderGames("segaGames", segaGames);
     </script>
   </section>
   <section id="simulator" class="details-section hidden">
