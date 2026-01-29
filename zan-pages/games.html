@@ -75,7 +75,7 @@ Enjoy.
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">SEGA</h2>
     <p class="section-desc">Rolling around at the speed of sound</p>
-    
+
     <div class="game-grid" id="segaGames"></div>
     <script>
       const segaGames = [
@@ -117,7 +117,7 @@ Enjoy.
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Simulators</h2>
     <p class="section-desc">No FNAF Pizzarea sim doesnt count!</p>
-    
+
     <div class="game-grid" id="simulatorGames"></div>
     <script>
       const simulatorGames = [
@@ -144,7 +144,7 @@ Enjoy.
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Platformer games</h2>
     <p class="section-desc">Does hollow knight count? NO!!!</p>
-    
+
     <div class="game-grid" id="platformerGames"></div>
     <script>
       const platformerGames = [
@@ -161,7 +161,7 @@ Enjoy.
     <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Action games</h2>
     <p class="section-desc">Do you know what time it is? -Jacket</p>
-    
+
     <div class="game-grid" id="actionGames"></div>
     <script>
       const actionGames = [
@@ -262,7 +262,7 @@ Enjoy.
           embedUrl: "https://xelrom171.github.io/spootlefy/",
           thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/spootlefy.png"
         },
-        
+
         {
           name: "data2text",
           embedUrl: "https://firestarrx.github.io/MethodsEmbeds/datatext.html",
@@ -622,21 +622,21 @@ Enjoy.
     title.textContent = game.name;
     player.classList.remove("hidden");
 
+
+
     try {
       const response = await fetch(game.embedUrl);
-      if (!response.ok) throw new Error("Network response was not ok");
-      const blob = await response.blob();
 
-      const blobUrl = URL.craeteObjectURL(blob);
 
-      embed.src = blobUrl;
+      const htmlContent = await response.text();
 
-      embed.onload = () => {
-        URL.revokeObjectURL(blobUrl);
-      };
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      embed.src = URL.createObjectURL(blob);
+
+      embed.srcdoc = htmlContent;
     } catch (error) {
-      console.error('Failed to load game content', error);
-      embed.srcdoc = "<h2>Failed to load game.</h2>"
+      console.error('Failed to load game content:', error),
+        embed.srcdoc = "<h2>Error loading game. </h2>";
     }
   }
   closeGame.addEventListener("click", () => {
