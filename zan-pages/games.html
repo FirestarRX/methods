@@ -624,15 +624,19 @@ Enjoy.
 
     try {
       const response = await fetch(game.embedUrl);
-      const htmlContent = await response.text();
+      if (!response.ok) throw new Error("Network response was not ok");
+      const blob = await response.blob();
 
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      embed.src = URL.createObjectURL(blob);
+      const blobUrl = URL.craeteObjectURL(blob);
 
-      embed.srcdoc = htmlContent;
+      embed.src = blobUrl;
+
+      embed.onload = () => {
+        URL.revokeObjectURL(blobUrl);
+      };
     } catch (error) {
-      console.error('Failed to load game content:', error),
-        embed.srcdoc = "<h2>Error loading game. </h2>";
+      console.error('Failed to load game content', error);
+      embed.srcdoc = "<h2>Failed to load game.</h2>"
     }
   }
   closeGame.addEventListener("click", () => {
