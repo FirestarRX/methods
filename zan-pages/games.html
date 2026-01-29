@@ -618,10 +618,23 @@ Enjoy.
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
 
-  function openGame(game) {
-    embed.src = game.embedUrl;
+  async function openGame(game) {
     title.textContent = game.name;
     player.classList.remove("hidden");
+
+    embed.srcdoc = "Loading..."
+
+    try {
+      const response = await fetch(game.embedUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const htmlContent = await response.text();
+
+      embed.srcdoc = htmlContent;
+    } catch (error) {
+      console.error('Failed to load game content:', error),
+        embed.srcdoc = "<h2>Error loading game. </h2>";
+    }
   }
   closeGame.addEventListener("click", () => {
     embed.src = "about:blank";
