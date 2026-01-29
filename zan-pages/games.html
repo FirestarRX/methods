@@ -622,13 +622,12 @@ Enjoy.
     title.textContent = game.name;
     player.classList.remove("hidden");
 
-    embed.srcdoc = "Loading..."
-
     try {
       const response = await fetch(game.embedUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
-
       const htmlContent = await response.text();
+
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      embed.src = URL.createObjectURL(blob);
 
       embed.srcdoc = htmlContent;
     } catch (error) {
