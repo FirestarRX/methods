@@ -628,9 +628,9 @@ Enjoy.
       const htmlContent = await response.text();
 
       const blob = new Blob([htmlContent], { type: 'text/html' });
-      //embed.src = URL.createObjectURL(blob);
+      embed.src = URL.createObjectURL(blob);
 
-      embed.srcdoc = htmlContent;
+      //embed.srcdoc = htmlContent;
     } catch (error) {
       console.error('Failed to load game content:', error),
         embed.srcdoc = "<h2>Error loading game. </h2>";
