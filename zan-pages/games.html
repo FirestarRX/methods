@@ -710,14 +710,6 @@ Enjoy.
 </style>
 
 <script>
-  const originalTitle = document.title;
-  document.title = "Assignments - Google Classroom";
-
-  document.addEventListener("visibilitychange", () => {
-    document.title = document.hidden
-      ? "Google Docs"
-      : "Assignments - Google Classroom";
-  });
   renderGames("favoriteGames", getStored(STORAGE_KEYS.favorites), true);
   renderGames("recentGames", getStored(STORAGE_KEYS.recents), true);
   const player = document.getElementById("gamePlayer");
