@@ -4,12 +4,57 @@ Enjoy.
 -->
 <script src="https://kit.fontawesome.com/424b17ee5b.js" crossorigin="anonymous"></script>
 <script>
-  function renderGames(containerId, games) {
+  const STORAGE_KEYS = {
+    favorites: "ugc_favorites",
+    recents: "ugc_recents"
+  };
+
+  function getStored(key) {
+    return JSON.parse(localStorage.getItem(key) || "[]");
+  }
+
+  function setStored(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function addRecent(game) {
+    let recents = getStored(STORAGE_KEYS.recents);
+    recents = recents.filter(g => g.name !== game.name);
+    recents.unshift(game);
+    recents = recents.slice(0, 12); // limit
+    setStored(STORAGE_KEYS.recents, recents);
+    renderGames("recentGames", recents, true);
+  }
+
+  function toggleFavorite(game) {
+    let favs = getStored(STORAGE_KEYS.favorites);
+    const exists = favs.find(g => g.name === game.name);
+
+    if (exists) {
+      favs = favs.filter(g => g.name !== game.name);
+    } else {
+      favs.unshift(game);
+    }
+
+    setStored(STORAGE_KEYS.favorites, favs);
+    renderGames("favoriteGames", favs, true);
+  }
+
+  function isFavorite(gameName) {
+    return getStored(STORAGE_KEYS.favorites).some(g => g.name === gameName);
+  }
+  function renderGames(containerId, games, allowFavorite = false) {
     const container = document.getElementById(containerId);
     container.innerHTML = "";
+
     games.forEach(game => {
       const card = document.createElement("div");
       card.className = "game-card game-thumb";
+      card.dataset.name = game.name.toLowerCase();
+      card.dataset.category = game.category || "";
+
+      const favActive = isFavorite(game.name);
+
       card.innerHTML = `
         <img src="${game.thumbnail}" alt="${game.name}">
         <div class="overlay">
@@ -17,9 +62,27 @@ Enjoy.
             <i class="fa-solid fa-play"></i> Play
           </button>
         </div>
+        ${allowFavorite ? `
+          <button class="fav-btn ${favActive ? "active" : ""}">
+            <i class="fa-solid fa-star"></i>
+          </button>
+        ` : ""}
         <span>${game.name}</span>
       `;
-      card.addEventListener("click", () => openGame(game));
+
+      card.addEventListener("click", () => {
+        openGame(game);
+        addRecent(game);
+      });
+
+      if (allowFavorite) {
+        card.querySelector(".fav-btn").addEventListener("click", e => {
+          e.stopPropagation();
+          toggleFavorite(game);
+          e.currentTarget.classList.toggle("active");
+        });
+      }
+
       container.appendChild(card);
     });
   }
@@ -38,6 +101,15 @@ Enjoy.
     <embed id="gameEmbed" src="" width="100%" height="100%" />
   </div>
 <div class="games-container">
+  <section class="game-section">
+    <h2>⭐ Favorites</h2>
+    <div class="game-grid" id="favoriteGames"></div>
+  </section>
+  
+  <section class="game-section">
+    <h2>🕒 Recently Played</h2>
+    <div class="game-grid" id="recentGames"></div>
+  </section>
   <!-- MAIN GAME LIBRARY -->
   <section id="mainLibrary" class="active-section">
     <h1>Games Library</h1>
@@ -602,9 +674,28 @@ Enjoy.
   .active-section {
     display: block;
   }
+  .fav-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 50%;
+    padding: 6px;
+    color: #a6adc8;
+    cursor: pointer;
+    z-index: 5;
+  }
+  
+  .fav-btn.active {
+    color: #f9e2af;
+  }
+
 </style>
 
 <script>
+  renderGames("favoriteGames", getStored(STORAGE_KEYS.favorites), true);
+  renderGames("recentGames", getStored(STORAGE_KEYS.recents), true);
   const player = document.getElementById("gamePlayer");
   const embed = document.getElementById("gameEmbed");
   const title = document.getElementById("gameTitle");
