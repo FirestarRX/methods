@@ -35,7 +35,8 @@ Enjoy.
     } else {
       favs.unshift(game);
     }
-
+    
+    favs.sort((a, b) => a.name.localeCompare(b.name));
     setStored(STORAGE_KEYS.favorites, favs);
     renderGames("favoriteGames", favs, true);
   }
@@ -100,24 +101,39 @@ Enjoy.
     </div>
     <embed id="gameEmbed" src="" width="100%" height="100%" />
   </div>
-<div class="games-container">
-  <section class="game-section">
-    <h2>⭐ Favorites</h2>
-    <div class="game-grid" id="favoriteGames"></div>
-  </section>
-  
-  <section class="game-section">
-    <h2>🕒 Recently Played</h2>
-    <div class="game-grid" id="recentGames"></div>
-  </section>
+
   <!-- MAIN GAME LIBRARY -->
+
   <section id="mainLibrary" class="active-section">
+    <section id="favorites" class="details-section hidden">
+      <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <h2 class="section-title">Favorites</h2>
+      <p class="section-desc">Your starred games</p>
+      <div class="game-grid" id="favoriteGames"></div>
+    </section>
+    
+    <section id="recents" class="details-section hidden">
+      <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <h2 class="section-title">Recently Played</h2>
+      <p class="section-desc">Your recent games</p>
+      <div class="game-grid" id="recentGames"></div>
+    </section>
+
+
     <h1>Games Library</h1>
     <p class="subtitle">Browse through categories and find your next favorite game!</p>
 
     <div class="search-bar">
       <input type="text" id="gameSearch" placeholder="Search game types..." />
       <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+
+    <div class="game-card" data-target="favorites">
+      <span><i class="fa-solid fa-star"></i> Favorites</span>
+    </div>
+
+    <div class="game-card" data-target="recents">
+      <span><i class="fa-solid fa-clock"></i> Recently Played</span>
     </div>
 
     <!-- Game Sections -->
@@ -694,6 +710,14 @@ Enjoy.
 </style>
 
 <script>
+  const originalTitle = document.title;
+  document.title = "Assignments - Google Classroom";
+
+  document.addEventListener("visibilitychange", () => {
+    document.title = document.hidden
+      ? "Google Docs"
+      : "Assignments - Google Classroom";
+  });
   renderGames("favoriteGames", getStored(STORAGE_KEYS.favorites), true);
   renderGames("recentGames", getStored(STORAGE_KEYS.recents), true);
   const player = document.getElementById("gamePlayer");
@@ -705,11 +729,21 @@ Enjoy.
   const searchInput = document.getElementById("gameSearch");
   searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase();
+
     document.querySelectorAll(".game-card").forEach(card => {
-      const name = card.textContent.toLowerCase();
-      card.style.display = name.includes(query) ? "block" : "none";
+        const name = card.dataset.name || "";
+        const category = card.dataset.category || "";
+        const text = card.textContent.toLowerCase();
+
+        const match =
+        name.includes(query) ||
+        category.includes(query) ||
+        text.includes(query);
+
+        card.style.display = match ? "block" : "none";
     });
-  });
+    });
+
 
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
