@@ -298,20 +298,10 @@ Enjoy.
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
 
-  async function openGame(game) {
+  function openGame(game) {
+    embed.src = game.embedUrl;
     title.textContent = game.name;
     player.classList.remove("hidden");
-
-    try {
-      const response = await fetch(game.embedUrl);
-
-      const htmlContent = await response.text();
-
-      embed.srcdoc = htmlContent;
-    } catch (error) {
-      console.error('Failed to load movie:', error),
-        embed.srcdoc = "<h2>Error loading movie. </h2>";
-    }
   }
   closeGame.addEventListener("click", () => {
     embed.src = "about:blank";
