@@ -3,25 +3,91 @@ Made by ThatOneNoob!
 Enjoy.
 -->
 <script src="https://kit.fontawesome.com/424b17ee5b.js" crossorigin="anonymous"></script>
+<script>
+  function renderGames(containerId, games) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    games.forEach(game => {
+      const card = document.createElement("div");
+      card.className = "game-card game-thumb";
+      card.innerHTML = `
+        <img src="${game.thumbnail}" alt="${game.name}">
+        <div class="overlay">
+          <button class="play-button">
+            <i class="fa-solid fa-play"></i> Play
+          </button>
+        </div>
+        <span>${game.name}</span>
+      `;
+      
+      if (game.target) {
+        card.onclick = () => openCategory(game.target);
+      } 
+      else if (game.seasons) {
+        card.onclick = () => openShow(game);
+      } 
+      else if (game.embedUrl) {
+        card.onclick = () => openGame(game);
+      }
+      container.appendChild(card);
+    });
+  }
+  function derenderGames(sectionId) {
+    const container = document.getElementById(sectionId);
+    if (container) container.innerHTML = "";
+  }
+  function renderSeasons(show) {
+    const seasonsEl = document.getElementById("seasonList");
+    seasonsEl.innerHTML = "";
 
-<!-- ===================== PLAYER ===================== -->
+    show.seasons.forEach((season, index) => {
+        const btn = document.createElement("div");
+        btn.className = "season-button";
+        btn.textContent = season.name;
+
+        btn.onclick = () => renderEpisodes(season);
+        seasonsEl.appendChild(btn);
+
+        if (index === 0) renderEpisodes(season);
+    });
+  }
+  function renderEpisodes(season) {
+    const list = document.getElementById("episodeList");
+    list.innerHTML = "";
+
+    season.episodes.forEach(ep => {
+        const row = document.createElement("div");
+        row.className = "episode-row";
+
+        row.innerHTML = `
+        <img src="${ep.thumbnail}">
+        <div class="ep-info">
+            <h4>${ep.number}. ${ep.title}</h4>
+            <span class="rating">${ep.rating}</span>
+            <span>${ep.date}</span>
+            <p>${ep.description}</p>
+        </div>
+        <span class="duration">${ep.duration}</span>
+        `;
+
+        row.onclick = () => openGame(ep);
+        list.appendChild(row);
+    });
+  }
+
+
+</script>
+
 <div class="game-player hidden" id="gamePlayer">
-  <div class="player-header">
-    <button id="closeGame" class="player-button">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    <button id="fullscreenGame" class="player-button">
-      <i class="fa-solid fa-expand"></i>
-    </button>
-    <span id="gameTitle"></span>
+    <div class="player-header">
+      <button id="closeGame" class="player-button"><i class="fa-solid fa-xmark"></i></button>
+      <button id="fullscreenGame" class="player-button"><i class="fa-solid fa-expand"></i></button>
+      <span id="gameTitle"></span>
+    </div>
+    <embed id="gameEmbed" src="" width="100%" height="100%" />
   </div>
-  <embed id="gameEmbed" src="" width="100%" height="100%" />
-</div>
-
-<!-- ===================== APP ===================== -->
 <div class="games-container">
-
-  <!-- ===== MAIN LIBRARY ===== -->
+  <!-- MAIN GAME LIBRARY -->
   <section id="mainLibrary" class="active-section">
     <h1>Games Library</h1>
     <p class="subtitle">Browse shows!</p>
@@ -31,40 +97,70 @@ Enjoy.
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
 
+    <!-- Game Sections -->
     <div class="game-grid">
-      <div class="game-card" data-target="animeSection">
-        <span>Anime</span>
-      </div>
+      <div class="game-card" data-target="anime"><span>Anime</span></div>
     </div>
   </section>
-
-  <!-- ===== ANIME CATEGORY ===== -->
-  <section id="animeSection" class="details-section hidden">
-    <button class="backButton">
-      <i class="fa-solid fa-arrow-left"></i> Back
-    </button>
-
+  <!-- GAME DETAILS SECTIONS -->
+  <section id="anime" class="details-section hidden">
+    <button class="backButton"><i class="fa-solid fa-arrow-left"></i> Back</button>
     <h2 class="section-title">Anime</h2>
     <p class="section-desc">What a weeb!</p>
-
+    
     <div class="game-grid" id="animeGrid"></div>
-  </section>
+    <script>
+      const Anime = [
+        {
+            name: "Jujutsu Kaisen",
+            thumbnail: "jjk.jpg",
+            seasons: [
+            {
+                name: "Season 1",
+                episodes: [
+                {
+                    title: "Ryomen Sukuna",
+                    number: 1,
+                    rating: 8.2,
+                    date: "10/3/2020",
+                    duration: "24m",
+                    description: "After visiting his grandfather...",
+                    thumbnail: "ep1.jpg",
+                    embedUrl: "https://example.com/ep1"
+                },
+                {
+                    title: "For Myself",
+                    number: 2,
+                    rating: 8.1,
+                    date: "10/10/2020",
+                    duration: "24m",
+                    description: "Yuji manages to control...",
+                    thumbnail: "ep2.jpg",
+                    embedUrl: "https://example.com/ep2"
+                }
+              ]
+            }
+          ]
+        }
+      ];
 
-  <!-- ===== SONIC CATEGORY ===== -->
-  <section id="sonicSection" class="details-section hidden">
+      renderGames("animeGrid", Anime);
+    </script>
+  </section>
+  <section id="episodeView" class="details-section hidden">
     <button class="backButton">
-      <i class="fa-solid fa-arrow-left"></i> Back
+        <i class="fa-solid fa-arrow-left"></i> Back
     </button>
 
-    <h2 class="section-title">Sonic</h2>
-    <p class="section-desc">Gotta go fast</p>
+    <h2 id="showTitle" class="section-title"></h2>
 
-    <div class="game-grid" id="sonicGrid"></div>
+    <div class="episodes-layout">
+        <div id="seasonList"></div>
+        <div id="episodeList"></div>
+    </div>
   </section>
-
 </div>
 
-<!-- ===================== STYLES ===================== -->
 <style>
   body {
     background-color: #1e1e2e;
@@ -72,14 +168,13 @@ Enjoy.
     font-family: "Inter", "Segoe UI", sans-serif;
   }
   .hidden { display: none; }
-  .active-section { display: block; }
-
   .games-container {
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem;
+    position: relative;
+    overflow: hidden;
   }
-
   .game-player {
     position: fixed;
     inset: 0;
@@ -88,19 +183,49 @@ Enjoy.
     flex-direction: column;
     z-index: 1000;
   }
-
   .player-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 15px;
     background: #11111b;
+    color: #cdd6f4;
     border-bottom: 1px solid #313244;
   }
 
+  h1 {
+    color: #cba6f7;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #a6adc8;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #cdd6f4;
+  }
+
   .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
-    position: relative;
+    align-items: center;
+    background: #1e1e2e;
+    padding: 10px 0;
     margin-bottom: 2rem;
+    border-bottom: 1px solid #313244;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
 
   .search-bar input {
@@ -110,13 +235,20 @@ Enjoy.
     border-radius: 8px;
     padding: 10px 40px 10px 15px;
     color: #cdd6f4;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s;
+  }
+
+  .search-bar input:focus {
+    border-color: #cba6f7;
   }
 
   .search-bar i {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 20px;
+    color: #a6adc8;
+    font-size: 1.1rem;
   }
 
   .game-grid {
@@ -130,9 +262,13 @@ Enjoy.
     border: 1px solid #313244;
     border-radius: 10px;
     padding: 1rem;
-    cursor: pointer;
     text-align: center;
-    transition: 0.3s;
+    color: #cdd6f4;
+    font-weight: 500;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
 
   .game-card:hover {
@@ -143,17 +279,24 @@ Enjoy.
   .game-thumb img {
     width: 100%;
     border-radius: 8px;
+    display: block;
+  }
+
+  .game-section h2 {
+    color: white;
   }
 
   .overlay {
     position: absolute;
-    inset: 0;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.6);
+    align-items: center;
     opacity: 0;
-    transition: 0.3s;
+    transition: opacity 0.3s;
   }
 
   .game-thumb:hover .overlay {
@@ -163,134 +306,161 @@ Enjoy.
   .play-button {
     background: #cba6f7;
     border: none;
-    padding: 10px 15px;
-    border-radius: 6px;
+    color: #1e1e2e;
     font-weight: bold;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
   }
 
-  .backButton, .player-button {
-    background: #cba6f7;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 12px;
-    cursor: pointer;
+  .play-button:hover {
+    background: #b4befe;
+  }
+
+  .game-card span {
+    display: block;
+    margin-top: 0.5rem;
+    color: #cdd6f4;
   }
 
   .details-section {
     opacity: 0;
     transform: translateY(20px);
-    transition: 0.4s ease;
+    transition: all 0.4s ease;
   }
 
   .details-section.active-section {
     opacity: 1;
     transform: translateY(0);
   }
+
+  .backButton {
+    background: #181825;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 8px;
+    padding: 8px 15px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .backButton:hover {
+    background: #313244;
+    border-color: #cba6f7;
+  }
+
+  .player-button {
+    background: #cba6f7;
+    border: none;
+    color: #1e1e2e;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .player-button:hover {
+    background: #b4befe;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .active-section {
+    display: block;
+  }
 </style>
 
-<!-- ===================== SCRIPT ===================== -->
 <script>
   const player = document.getElementById("gamePlayer");
   const embed = document.getElementById("gameEmbed");
   const title = document.getElementById("gameTitle");
+  const closeGame = document.getElementById("closeGame");
+  const fullscreenGame = document.getElementById("fullscreenGame");
+
+  const searchInput = document.getElementById("gameSearch");
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    document.querySelectorAll(".game-card").forEach(card => {
+      const name = card.textContent.toLowerCase();
+      card.style.display = name.includes(query) ? "block" : "none";
+    });
+  });
 
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
-
-  function renderGames(containerId, items) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
-
-    items.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "game-card game-thumb";
-
-      card.innerHTML = `
-        <img src="${item.thumbnail}">
-        <div class="overlay">
-          <button class="play-button">
-            <i class="fa-solid ${item.type === "category" ? "fa-folder-open" : "fa-play"}"></i>
-            ${item.type === "category" ? "Open" : "Play"}
-          </button>
-        </div>
-        <span>${item.name}</span>
-      `;
-
-      if (item.type === "category") {
-        card.onclick = () => openCategory(item.target);
-      } else {
-        card.onclick = () => openGame(item);
-      }
-
-      container.appendChild(card);
-    });
-  }
-
-  function openCategory(sectionId) {
-    mainLibrary.classList.add("hidden");
-    detailSections.forEach(s => s.classList.add("hidden"));
-
-    const section = document.getElementById(sectionId);
-    section.classList.remove("hidden");
-
-    requestAnimationFrame(() => {
-      section.classList.add("active-section");
-    });
-  }
 
   function openGame(game) {
     embed.src = game.embedUrl;
     title.textContent = game.name;
     player.classList.remove("hidden");
   }
-
-  document.getElementById("closeGame").onclick = () => {
+  closeGame.addEventListener("click", () => {
     embed.src = "about:blank";
+    embed.srcdoc = "";
     player.classList.add("hidden");
-  };
-
-  document.getElementById("fullscreenGame").onclick = () => {
+  });
+  fullscreenGame.addEventListener("click", () => {
     embed.requestFullscreen();
-  };
+  });
+
+  function openCategory(sectionId) {
+    document.getElementById("mainLibrary").classList.add("hidden");
+
+    const section = document.getElementById(sectionId);
+    section.classList.remove("hidden");
+
+    requestAnimationFrame(() => {
+        section.classList.add("active-section");
+    });
+  }
+    function openShow(show) {
+        detailSections.forEach(sec => sec.classList.add("hidden"));
+        mainLibrary.classList.add("hidden");
+
+        document.getElementById("showTitle").textContent = show.name;
+
+        const section = document.getElementById("episodeView");
+        section.classList.remove("hidden");
+
+        renderSeasons(show);
+
+        requestAnimationFrame(() => {
+            section.classList.add("active-section");
+        });
+    }
+
 
   document.querySelectorAll(".game-card[data-target]").forEach(card => {
-    card.onclick = () => openCategory(card.dataset.target);
+    card.addEventListener("click", () => {
+      const targetId = card.dataset.target;
+      const targetSection = document.getElementById(targetId);
+
+      if (targetSection) {
+        mainLibrary.classList.remove("active-section");
+        mainLibrary.classList.add("hidden");
+
+        detailSections.forEach(sec => sec.classList.add("hidden"));
+        targetSection.classList.remove("hidden");
+        requestAnimationFrame(() => targetSection.classList.add("active-section"));
+      }
+    });
   });
 
-  document.querySelectorAll(".backButton").forEach(btn => {
-    btn.onclick = () => {
-      detailSections.forEach(s => s.classList.remove("active-section"));
-      detailSections.forEach(s => s.classList.add("hidden"));
-
+  document.querySelectorAll(".backButton").forEach(button => {
+    button.addEventListener("click", () => {
+      detailSections.forEach(sec => {
+        sec.classList.remove("active-section");
+        sec.classList.add("hidden");
+      });
       mainLibrary.classList.remove("hidden");
       requestAnimationFrame(() => mainLibrary.classList.add("active-section"));
-    };
+    });
   });
-
-  /* ===== DATA ===== */
-
-  const animeCategories = [
-    {
-      name: "Sonic",
-      thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/SonicCD.png",
-      type: "category",
-      target: "sonicSection"
-    }
-  ];
-
-  const sonicGames = [
-    {
-      name: "Sonic CD",
-      thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/SonicCD.png",
-      embedUrl: "https://firestarrx.github.io/MethodsEmbeds/SonicCD.html"
-    },
-    {
-      name: "Sonic Mania",
-      thumbnail: "https://firestarrx.github.io/MethodsEmbeds/img/SonicM.png",
-      embedUrl: "https://firestarrx.github.io/MethodsEmbeds/SonicM.html"
-    }
-  ];
-
-  renderGames("animeGrid", animeCategories);
-  renderGames("sonicGrid", sonicGames);
 </script>
