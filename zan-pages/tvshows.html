@@ -56,24 +56,23 @@ Enjoy.
     list.innerHTML = "";
 
     season.episodes.forEach(ep => {
-        const row = document.createElement("div");
-        row.className = "episode-row";
+        const btn = document.createElement("div");
+        btn.className = "episode-button";
 
-        row.innerHTML = `
-        <img src="${ep.thumbnail}">
-        <div class="ep-info">
-            <h4>${ep.number}. ${ep.title}</h4>
-            <span class="rating">${ep.rating}</span>
-            <span>${ep.date}</span>
-            <p>${ep.description}</p>
-        </div>
-        <span class="duration">${ep.duration}</span>
+        btn.innerHTML = `
+            <img src="${ep.thumbnail}" alt="${ep.title}" class="episode-thumb">
+            <div class="episode-info">
+                <span class="episode-title">${ep.number}. ${ep.title}</span>
+                <span class="duration">${ep.duration}</span>
+            </div>
         `;
 
-        row.onclick = () => openGame(ep);
-        list.appendChild(row);
+        btn.onclick = () => openGame(ep);
+        list.appendChild(btn);
     });
   }
+
+
 
 
 </script>
@@ -375,6 +374,73 @@ Enjoy.
   .active-section {
     display: block;
   }
+  #episodeList {
+        display: flex;
+        flex-direction: column; /* stacked vertically, full width */
+        gap: 10px;
+        padding: 10px 0;
+    }
+
+    .episode-button {
+        display: flex;
+        align-items: center;
+        background: #181825;
+        border: 1px solid #313244;
+        border-radius: 8px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background 0.3s, border-color 0.3s;
+    }
+
+    .episode-button:hover {
+        background: #313244;
+        border-color: #cba6f7;
+    }
+
+    .episode-thumb {
+        width: 80px; /* thumbnail size */
+        height: 45px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-right: 10px;
+    }
+
+    .episode-info {
+        display: flex;
+        flex-direction: column;
+        color: #cdd6f4;
+    }
+
+    .episode-title {
+        font-weight: bold;
+    }
+
+    .duration {
+        font-size: 0.85rem;
+        color: #a6adc8;
+    }
+
+    #seasonList {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .season-button {
+        background: #181825;
+        border: 1px solid #313244;
+        border-radius: 8px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background 0.3s, border-color 0.3s;
+    }
+
+    .season-button:hover {
+        background: #313244;
+        border-color: #cba6f7;
+    }
+
+
 </style>
 
 <script>
@@ -421,20 +487,32 @@ Enjoy.
     });
   }
     function openShow(show) {
-        detailSections.forEach(sec => sec.classList.add("hidden"));
+        // Hide main library
         mainLibrary.classList.add("hidden");
+        mainLibrary.classList.remove("active-section");
 
+        // Hide all other detail sections except episode view
+        detailSections.forEach(sec => {
+            if (sec.id !== "episodeView") {
+                sec.classList.add("hidden");
+                sec.classList.remove("active-section");
+            }
+        });
+
+        // Set the title
         document.getElementById("showTitle").textContent = show.name;
 
-        const section = document.getElementById("episodeView");
-        section.classList.remove("hidden");
-
-        renderSeasons(show);
-
+        // Show episode view
+        const episodeSection = document.getElementById("episodeView");
+        episodeSection.classList.remove("hidden");
         requestAnimationFrame(() => {
-            section.classList.add("active-section");
+            episodeSection.classList.add("active-section");
         });
+
+        // Render seasons
+        renderSeasons(show);
     }
+
 
 
   document.querySelectorAll(".game-card[data-target]").forEach(card => {
