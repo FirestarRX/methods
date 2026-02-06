@@ -950,12 +950,8 @@ Enjoy.
   const detailSections = document.querySelectorAll(".details-section");
 
   function openGame(game) {
-    const player = document.getElementById("gamePlayer");
-    const video = document.getElementById("gameEmbed");
-    video.src = game.embedUrl;
-    video.load();
-    video.play();
-    document.getElementById("gameTitle").textContent = game.title || game.name;
+    embed.src = game.embedUrl;
+    title.textContent = game.name;
     player.classList.remove("hidden");
   }
 
