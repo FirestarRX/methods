@@ -1026,6 +1026,16 @@ Enjoy.
         // Render seasons
         renderSeasons(show);
     }
+  if (ep.embedUrl && ep.embedUrl.endsWith(".mp4")) {
+    gameEmbed.style.display = "none";
+    videoEmbed.style.display = "block";
+    videoEmbed.src = ep.embedUrl;
+    videoEmbed.play();
+  } else if (ep.embedUrl) {
+      videoEmbed.style.display = "none";
+      gameEmbed.style.display = "block";
+      gameEmbed.src = ep.embedUrl;
+  }
 
 
   document.querySelectorAll(".backButton").forEach(btn => {
