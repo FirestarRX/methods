@@ -95,6 +95,7 @@ Enjoy.
       <span id="gameTitle"></span>
     </div>
     <embed id="gameEmbed" src="" width="100%" height="100%" />
+    <embed id="videoEmbed" src="" width="100%" height="100%" style="display:none;" />
   </div>
 <div class="games-container">
   <!-- MAIN GAME LIBRARY -->
@@ -950,23 +951,34 @@ Enjoy.
   const detailSections = document.querySelectorAll(".details-section");
 
   async function openGame(game) {
+    const title = document.getElementById("gameTitle");
+    const player = document.getElementById("gamePlayer");
+    const gameEmbed = document.getElementById("gameEmbed");
+    const videoEmbed = document.getElementById("videoEmbed");
+
     title.textContent = game.name;
     player.classList.remove("hidden");
 
-    try {
-      const response = await fetch(game.embedUrl);
+    if (game.embedUrl.endsWith(".mp4")) {
+        gameEmbed.style.display = "none";
+        videoEmbed.style.display = "block";
+        videoEmbed.src = game.embedUrl; // raw MP4
+    } else {
+        gameEmbed.style.display = "block";
+        videoEmbed.style.display = "none";
 
-      const htmlContent = await response.text();
-
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      embed.src = URL.createObjectURL(blob);
-
-      //embed.srcdoc = htmlContent;
-    } catch (error) {
-      console.error('Failed to load game content:', error),
-        embed.srcdoc = "<h2>Error loading game. </h2>";
+        try {
+            const response = await fetch(game.embedUrl);
+            const htmlContent = await response.text();
+            const blob = new Blob([htmlContent], { type: "text/html" });
+            gameEmbed.src = URL.createObjectURL(blob);
+        } catch (err) {
+            console.error("Failed to load game content:", err);
+            gameEmbed.srcdoc = "<h2>Error loading game.</h2>";
+        }
     }
   }
+
 
   closeGame.addEventListener("click", () => {
     embed.src = "about:blank";
