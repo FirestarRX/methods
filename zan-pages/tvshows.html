@@ -82,6 +82,37 @@ Enjoy.
     });
     }
 
+  async function openGame(ep) {
+    const gameEmbed = document.getElementById("gameEmbed");
+    const videoEmbed = document.getElementById("videoEmbed");
+    const title = document.getElementById("gameTitle");
+    const player = document.getElementById("gamePlayer");
+
+    title.textContent = ep.title || ep.name;
+    player.classList.remove("hidden");
+
+    // Check if the embed URL is a video
+    if (ep.embedUrl && ep.embedUrl.endsWith(".mp4")) {
+        gameEmbed.style.display = "none";
+        videoEmbed.style.display = "block";
+        videoEmbed.src = ep.embedUrl;
+        videoEmbed.type = "video/mp4"; // optional
+    } else if (ep.embedUrl) {
+        // Treat as HTML/game embed
+        videoEmbed.style.display = "none";
+        gameEmbed.style.display = "block";
+
+        try {
+            const response = await fetch(ep.embedUrl);
+            const htmlContent = await response.text();
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            gameEmbed.src = URL.createObjectURL(blob);
+        } catch (error) {
+            console.error("Failed to load game content:", error);
+            gameEmbed.srcdoc = "<h2>Error loading content</h2>";
+        }
+    }
+  }
 
 
 
@@ -95,7 +126,7 @@ Enjoy.
       <span id="gameTitle"></span>
     </div>
     <embed id="gameEmbed" src="" width="100%" height="100%" />
-    <embed id="videoEmbed" src="" width="100%" height="100%" style="display:none;" />
+    <video id="videoEmbed" width="100%" height="100%" controls style="display:none;"></video>
   </div>
 <div class="games-container">
   <!-- MAIN GAME LIBRARY -->
@@ -950,36 +981,6 @@ Enjoy.
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
 
-  async function openGame(game) {
-    const title = document.getElementById("gameTitle");
-    const player = document.getElementById("gamePlayer");
-    const gameEmbed = document.getElementById("gameEmbed");
-    const videoEmbed = document.getElementById("videoEmbed");
-
-    title.textContent = game.name;
-    player.classList.remove("hidden");
-
-    if (game.embedUrl.endsWith(".mp4")) {
-        gameEmbed.style.display = "none";
-        videoEmbed.style.display = "block";
-        videoEmbed.src = game.embedUrl; // raw MP4
-    } else {
-        gameEmbed.style.display = "block";
-        videoEmbed.style.display = "none";
-
-        try {
-            const response = await fetch(game.embedUrl);
-            const htmlContent = await response.text();
-            const blob = new Blob([htmlContent], { type: "text/html" });
-            gameEmbed.src = URL.createObjectURL(blob);
-        } catch (err) {
-            console.error("Failed to load game content:", err);
-            gameEmbed.srcdoc = "<h2>Error loading game.</h2>";
-        }
-    }
-  }
-
-
   closeGame.addEventListener("click", () => {
     embed.src = "about:blank";
     embed.srcdoc = "";
@@ -1027,7 +1028,14 @@ Enjoy.
     }
 
 
-
+  document.querySelectorAll(".backButton").forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll(".details-section").forEach(sec => sec.classList.add("hidden"));
+        document.getElementById("mainLibrary").classList.remove("hidden");
+        document.getElementById("gamePlayer").classList.add("hidden");
+    }
+  });
+  
   document.querySelectorAll(".game-card[data-target]").forEach(card => {
     card.addEventListener("click", () => {
       const targetId = card.dataset.target;
