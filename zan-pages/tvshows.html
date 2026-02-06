@@ -949,14 +949,23 @@ Enjoy.
   const mainLibrary = document.getElementById("mainLibrary");
   const detailSections = document.querySelectorAll(".details-section");
 
-  function openGame(game) {
-    const player = document.getElementById("gamePlayer");
-    const video = document.getElementById("gameEmbed");
-    video.src = game.embedUrl;
-    video.load();
-    video.play();
-    document.getElementById("gameTitle").textContent = game.title || game.name;
+  async function openGame(game) {
+    title.textContent = game.name;
     player.classList.remove("hidden");
+
+    try {
+      const response = await fetch(game.embedUrl);
+
+      const htmlContent = await response.text();
+
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      embed.src = URL.createObjectURL(blob);
+
+      //embed.srcdoc = htmlContent;
+    } catch (error) {
+      console.error('Failed to load game content:', error),
+        embed.srcdoc = "<h2>Error loading game. </h2>";
+    }
   }
 
   closeGame.addEventListener("click", () => {
