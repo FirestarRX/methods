@@ -246,6 +246,18 @@ body.performance-mode * {
             </button>
         </div>
 
+        <!-- Featured Grid -->
+        <section>
+            <div class="flex items-center justify-between mb-6 cursor-pointer group" onclick="toggleSection('featuredGrid', this)">
+                <div class="flex items-center gap-3">
+                    <div class="w-1.5 h-6 bg-primary rounded-full"></div>
+                    <h2 class="text-2xl font-bold text-text">Featured Games</h2>
+                </div>
+                <svg class="w-6 h-6 text-muted group-hover:text-primary transition-colors collapse-arrow duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" id="featuredGrid"></div>
+        </section>
+
         <!-- Trending Section -->
         <section>
             <div class="flex items-center gap-3 mb-6">
@@ -261,18 +273,6 @@ body.performance-mode * {
 
         <!-- Dynamic Tags -->
         <div id="tagSections" class="space-y-12"></div>
-
-        <!-- Featured Grid -->
-        <section>
-            <div class="flex items-center justify-between mb-6 cursor-pointer group" onclick="toggleSection('featuredGrid', this)">
-                <div class="flex items-center gap-3">
-                    <div class="w-1.5 h-6 bg-primary rounded-full"></div>
-                    <h2 class="text-2xl font-bold text-text">Featured Games</h2>
-                </div>
-                <svg class="w-6 h-6 text-muted group-hover:text-primary transition-colors collapse-arrow duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" id="featuredGrid"></div>
-        </section>
 
         <!-- All Games -->
         <section id="allGamesSection">
